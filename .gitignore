@@ -2,3 +2,4 @@
 *.jpeg
 *.png
 /staticfiles
+db.sqlite3
