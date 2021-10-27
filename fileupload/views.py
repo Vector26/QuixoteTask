@@ -48,8 +48,8 @@ def get_exif(fn):
 
 def storage(request, pk):
     images = image.objects.filter(id=pk)[0]
-    exif_data = get_exif(f"{settings.MEDIA_ROOT}\\{images.pic}")
-    print(f"{settings.MEDIA_ROOT}\\{images.pic}")
+    exif_data = get_exif(f"{settings.MEDIA_ROOT}/{images.pic}")
+    print(f"{settings.MEDIA_ROOT}/{images.pic}")
     exif_data=get_exif(images.pic)
     if(exif_data==None):
         exif_data="No Exif Data"
