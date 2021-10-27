@@ -16,13 +16,14 @@
         <form method="POST" enctype="multipart/form-data">
           <!-- Very Important csrf Token -->
           {% csrf_token %}
-
+          <input type="button" onclick="document.getElementById('id_pic').click()" value="Select File" />
           <input
             type="file"
             name="pic"
             accept="image/*"
             required=""
             id="id_pic"
+            style="width:0px;"
             onchange="return fileValidation()"
           />
           <label class="labelfile" id="labelfile"><i class="icon-download-alt"></i> Browse File</label>
