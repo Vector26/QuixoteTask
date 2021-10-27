@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from .forms import FileForm
+from task import settings
 from .models import image
 from PIL import Image
 from PIL.ExifTags import TAGS
-IMAGE_FILE_TYPES = ['jpg', 'jpeg']
+IMAGE_FILE_TYPES = ['jpg', 'jpeg','png']
 def create_profile(request):
     form = FileForm()
     if request.method == 'POST':
@@ -16,12 +17,40 @@ def create_profile(request):
             if file_type not in IMAGE_FILE_TYPES:
                 return render(request, 'errors.html')
             user_pr.save()
-            # return render(request, 'details.html', {'user_pr': user_pr})
+            # exif_data=get_exif(f"MEDIA_ROOT/{user_pr.pic}")
+            return render(request, 'details.html', {'user_pr': user_pr})
     images=image.objects.filter()
     context = {"form": form,"images":images}
     return render(request, 'create.html', context)
 
+def get_exif(fn):
+    ret = {}
+    Img = Image.open(fn)
+    # info_ = Img._getexif()
+    # if(info_==None):
+    #     info_=Img.info
+    info=dict()
+    info["EXIF"] = Img._getexif()
+    info["Filename"]=Img.filename
+    # Getting the format of image
+    info["Format"]=Img.format
+    # Getting the mode of image
+    info["Mode"]=Img.mode
+    # Getting the size of image
+    info["Size"]=Img.size
+    # Getting only the width of image
+    info["Width"]=Img.width
+    # Getting only the height of image
+    info["Height"]=Img.height
+    # Getting the color palette of image
+    info["Image Palette"]=Img.palette
+    return info
+
 def storage(request, pk):
     images = image.objects.filter(id=pk)[0]
-    # exif_data=get_exif(images.pic)
-    return render(request,'storage.html',{"image":images})
+    exif_data = get_exif(f"{settings.MEDIA_ROOT}\\{images.pic}")
+    print(f"{settings.MEDIA_ROOT}\\{images.pic}")
+    exif_data=get_exif(images.pic)
+    if(exif_data==None):
+        exif_data="No Exif Data"
+    return render(request,'storage.html',{"image":images,"exif":exif_data})
