@@ -1,0 +1,11 @@
+{% extends 'create.html' %}
+{% block replace %}
+<CENTER>
+<div class="jumbotron">
+  <img src="{{ user_pr.display_picture.url }}" class="image_responsive" height="100px" width="100px">
+  <p>
+    {{ user_pr.display_picture.url }}<BR>
+   You have learned some awesome technologies like {{ user_pr.technologies }}</p>
+</div>
+</CENTER>
+{% endblock %}

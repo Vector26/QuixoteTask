@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Make Profile</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <center>
+      <div class="jumbotron">
+        {% block replace %}
+        <form method="POST" enctype="multipart/form-data">
+          <!-- Very Important csrf Token -->
+          {% csrf_token %}
+
+          <input
+            type="file"
+            name="pic"
+            accept="image/*"
+            value="Select"
+            required=""
+            id="id_pic"
+            onchange="return fileValidation()"
+          />
+          <br>
+          <br>
+          <input type="submit" class="btn btn-primary btn-lg" name="register" />
+        </form>
+      </div>
+    </center>
+    <center>
+    <button class="btn btn-lg" onclick="myFunction()">Show Links</button>
+
+    <div class="container" id="myDIV" style="margin:1em;padding:1em;border: solid 10px rgb(0, 107, 150); width: fit-content;">
+      {% for i in images %}
+      <a class="link-success" style="font-size: medium; margin: 2em 0;" href="/storage/{{i.id}}">{{i.pic}}</a>
+      <br />
+      {% endfor %}
+    </div>
+    </center>
+
+    <script>
+      function fileValidation() {
+        var fileInput = document.getElementById("id_pic");
+        if (fileInput.files.length > 0) {
+            for (const i = 0; i <= fileInput.files.length - 1; i++) {
+  
+                const fsize = fileInput.files.item(i).size;
+                const file = Math.round((fsize / 1024));
+                // The size of the file.
+                if (file >= 1024) {
+                    alert(
+                      "File too Big, please select a file less than 4mb");
+                }
+            }
+        }
+        var filePath = fileInput.value;
+
+        // Allowing file type
+        var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+
+        if (!allowedExtensions.exec(filePath)) {
+          alert("Invalid file type");
+          fileInput.value = "";
+          return false;
+        }
+      }
+      var x = document.getElementById("myDIV");
+      x.style.display = "none";
+      function myFunction() {
+        var x = document.getElementById("myDIV");
+        if (x.style.display === "none") {
+          x.style.display = "block";
+        } else {
+          x.style.display = "none";
+        }
+      }
+    </script>
+    {% endblock %}
+  </body>
+</html>
