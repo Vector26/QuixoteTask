@@ -4,7 +4,7 @@ from task import settings
 from .models import image
 from PIL import Image
 from PIL.ExifTags import TAGS
-IMAGE_FILE_TYPES = ['jpg', 'jpeg','png']
+IMAGE_FILE_TYPES = ['jpeg','png']
 def create_profile(request):
     form = FileForm()
     if request.method == 'POST':
